@@ -2511,6 +2511,12 @@ pub fn load_custom_client() {
     // folder, IPC pipe, install detection or single-instance window with an
     // official RustDesk on the same machine.
     *config::APP_NAME.write().unwrap() = "SeatLinkRD".to_owned();
+    // Portable only: hide the install card and refuse --install, which would
+    // prompt for elevation and register a Windows service.
+    config::HARD_SETTINGS
+        .write()
+        .unwrap()
+        .insert("disable-installation".to_owned(), "Y".to_owned());
     #[cfg(debug_assertions)]
     if let Ok(data) = std::fs::read_to_string("./custom.txt") {
         read_custom_client(data.trim());
