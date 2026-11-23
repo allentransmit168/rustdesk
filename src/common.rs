@@ -2507,6 +2507,10 @@ pub fn rustdesk_interval(i: Interval) -> ThrottledInterval {
 }
 
 pub fn load_custom_client() {
+    // Run under a distinct app name so this build never shares its config
+    // folder, IPC pipe, install detection or single-instance window with an
+    // official RustDesk on the same machine.
+    *config::APP_NAME.write().unwrap() = "SeatLinkRD".to_owned();
     #[cfg(debug_assertions)]
     if let Ok(data) = std::fs::read_to_string("./custom.txt") {
         read_custom_client(data.trim());
